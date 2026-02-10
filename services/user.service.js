@@ -5,7 +5,7 @@ module.exports.userCreateSrv = async (data) => {
 };
 
 module.exports.userFetchOneSrv = async (email) => {
-  return await userModel.findOne({ email });
+  return await userModel.findOne({ email }).select("+password");
 };
 
 module.exports.userFetchOneSrvWithID = async (id) => {

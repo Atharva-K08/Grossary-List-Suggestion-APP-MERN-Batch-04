@@ -14,6 +14,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/users", require("./routes/user.routes"));
+
 // health
 app.get("/health", (req, res) => {
   res.status(200).json({
