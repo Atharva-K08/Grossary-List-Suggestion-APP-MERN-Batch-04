@@ -4,8 +4,8 @@ module.exports.productCreateSrv = async (data) => {
   return await productModel.create(data);
 };
 
-module.exports.productFetchOneSrv = async (email) => {
-  return await productModel.findOne({ email });
+module.exports.productFetchOneSrv = async (productName) => {
+  return await productModel.findOne({ productName });
 };
 
 module.exports.productFetchOneSrvWithID = async (id) => {
