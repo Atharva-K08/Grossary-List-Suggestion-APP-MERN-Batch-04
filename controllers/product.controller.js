@@ -1,6 +1,7 @@
 const {
   productCreateSrv,
   productFetchOneSrv,
+  productsFetchSrv,
 } = require("../services/product.service");
 
 module.exports.createProductController = async (req, res, next) => {
@@ -20,6 +21,22 @@ module.exports.createProductController = async (req, res, next) => {
         product: db_res,
       });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getProductsController = async (req, res, next) => {
+  try {
+    const db_res = await productsFetchSrv();
+    if (db_res.length == 0) {
+      throw new Error("List is Empty");
+    }
+    res.status(200).json({
+      message: "produts fetched successfully",
+      success: true,
+      list: db_res,
+    });
   } catch (error) {
     next(error);
   }
