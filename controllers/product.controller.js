@@ -2,6 +2,8 @@ const {
   productCreateSrv,
   productFetchOneSrv,
   productsFetchSrv,
+  productUpdateSrv,
+  productFetchOneSrvWithID,
 } = require("../services/product.service");
 
 module.exports.createProductController = async (req, res, next) => {
@@ -36,6 +38,24 @@ module.exports.getProductsController = async (req, res, next) => {
       message: "produts fetched successfully",
       success: true,
       list: db_res,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.updateProductController = async (req, res, next) => {
+  try {
+    const product = await productFetchOneSrv(req.body.productName);
+    if (!product) {
+      throw new Error("product not found");
+    }
+    const db_res = await productUpdateSrv(req.body._id, req.body);
+
+    res.status(200).json({
+      message: "product updated sucessfully",
+      success: true,
+      updated_data: db_res,
     });
   } catch (error) {
     next(error);

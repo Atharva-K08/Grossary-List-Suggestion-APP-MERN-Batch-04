@@ -9,7 +9,7 @@ module.exports.productFetchOneSrv = async (productName) => {
 };
 
 module.exports.productFetchOneSrvWithID = async (id) => {
-  return await productModel.findById(id);
+  return await productModel.findOne({_id: id});
 };
 
 module.exports.productsFetchSrv = async () => {
