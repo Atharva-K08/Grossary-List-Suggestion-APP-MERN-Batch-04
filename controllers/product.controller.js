@@ -4,10 +4,13 @@ const {
   productsFetchSrv,
   productUpdateSrv,
   productFetchOneSrvWithID,
+  productDeleteSrv,
 } = require("../services/product.service");
 
 module.exports.createProductController = async (req, res, next) => {
   try {
+    const userId = req.userId;
+    req.body.userId = userId;
     const isExist = await productFetchOneSrv(req.body.productName);
     console.log("is Exist", isExist);
     if (isExist != null) {
@@ -30,9 +33,13 @@ module.exports.createProductController = async (req, res, next) => {
 
 module.exports.getProductsController = async (req, res, next) => {
   try {
-    const db_res = await productsFetchSrv();
+    const db_res = await productsFetchSrv(req.userId);
     if (db_res.length == 0) {
-      throw new Error("List is Empty");
+      res.status(200).json({
+        message: "product list is empty",
+        success: true,
+        list: db_res,
+      });
     }
     res.status(200).json({
       message: "produts fetched successfully",
@@ -57,6 +64,23 @@ module.exports.updateProductController = async (req, res, next) => {
       success: true,
       updated_data: db_res,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.deleteProductController = async (req, res, next) => {
+  try {
+    const product = await productFetchOneSrvWithID(req.params.id);
+    if (!product) {
+      throw new Error("product not found");
+    } else {
+      await productDeleteSrv(req.params.id);
+      res.status(200).json({
+        message: "product deleted sucessfully",
+        success: true,
+      });
+    }
   } catch (error) {
     next(error);
   }

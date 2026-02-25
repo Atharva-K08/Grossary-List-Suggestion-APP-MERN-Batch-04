@@ -12,8 +12,8 @@ module.exports.productFetchOneSrvWithID = async (id) => {
   return await productModel.findOne({_id: id});
 };
 
-module.exports.productsFetchSrv = async () => {
-  return await productModel.find();
+module.exports.productsFetchSrv = async (userId) => {
+  return await productModel.find({userId});
 };
 
 module.exports.productUpdateSrv = async (id, data) => {

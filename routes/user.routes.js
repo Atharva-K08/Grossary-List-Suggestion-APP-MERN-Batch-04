@@ -11,4 +11,5 @@ router.post("/", registerUser);
 router.post("/login", loginUser);
 router.get("/", fetchUsers);
 
+
 module.exports = router;
