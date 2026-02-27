@@ -2,6 +2,7 @@ const {
   userFetchOneSrv,
   userCreateSrv,
   usersFetchSrv,
+  userFetchOneSrvWithID,
 } = require("../services/user.service");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -60,12 +61,29 @@ module.exports.fetchUsers = async (req, res, next) => {
   try {
     const userlist = await usersFetchSrv();
     if (userlist.length == 0) {
-      throw new Error("Users not Found")
+      throw new Error("Users not Found");
     }
     res.status(200).json({
       message: "Users Found",
       success: true,
       users: userlist,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get user profile using token
+module.exports.getUserProfile = async (req, res, next) => {
+  try {
+    const db_user = await userFetchOneSrvWithID(req.userId);
+    if (!db_user) {
+      throw new Error("User not found");
+    }
+
+    res.status(200).json({
+      message: "User profile fetched successfully",
+      user: db_user,
     });
   } catch (err) {
     next(err);
